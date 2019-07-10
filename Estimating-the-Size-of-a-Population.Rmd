@@ -3,15 +3,38 @@ title: "Estimating Population Size"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+
+```{r set-options, echo=FALSE, cache=FALSE, warning = FALSE}
+
+rm(list=ls())
+startTime<-proc.time()
+library(knitr)
+options(width=120)
+opts_chunk$set(comment = "", warning = FALSE, message = FALSE,
+               echo = TRUE, tidy = FALSE, size="tiny",  cache=FALSE,
+               progress=TRUE,
+               cache.path = 'program_Cache/',
+               fig.path='figure/')
+
+knitr::knit_hooks$set(inline = function(x) {
+  knitr:::format_sci(x, 'md')
+})
+
 ```
 
-## R Markdown
+```{r ,echo=FALSE}
 
-second draft
+p2 <- function(x) {formatC(x, format="f", digits=4)}
 
-```{r cars}
+```
+
+In any war, it is always of value to one side to have good intelligence on the weapons resources of the other side. During the Second World War, for example, Allied military planners eagerly searched for ways to accurately estimate the Axis production of tanks, aircraft, and numerous other weapons platforms. In the speciﬁc case of German tanks, a very clever way to do that was based on using either the stamped serial numbers or the gearbox markings on captured Mark I or Mark V tanks, respectively. This type of problem has far wider applications than simply counting tanks.
+
+We can experimentally see how well the formula works in practice with a Monte Carlo simulation. That is, the program ﬁrst randomly picks the value of N (any integer from 100 to 1,000), and then asks for the value of the sample size n as a percentage of N. 
+
+The program then generates, randomly, n different integers in the interval 1 to N (the program does know N, of course!) determines the maximum of those integers, and then uses our estimation formula to arrive at an estimated value for N. This estimate can then be compared with the actual value of N to determine how well our estimation formula has performed. We investigate samples that are 2%, 5%, 10% and 20% of the population.
+
+```{r pop function}
 
 
 runSim <- function(nSim=1000,  sample.size.perc=10/100 ) {
@@ -41,29 +64,68 @@ runSim <- function(nSim=1000,  sample.size.perc=10/100 ) {
   
 }
 
+```
 
-x<- runSim(nSim=10000,  sample.size.perc=2/100)
-apply(x$estArray, 2, mean, na.rm=TRUE)
-quantile( x$estArray[,1] , prob=c(0.025, 0.5, 0.975))
-hist(x$estArray[,1], breaks=100)
+## Sample size 2% of population
 
-x<- runSim(nSim=10000,  sample.size.perc=5/100)
-apply(x$estArray, 2, mean, na.rm=TRUE)
-quantile( x$estArray[,1] , prob=c(0.025, 0.5, 0.975))
-hist(x$estArray[,1], breaks=100)
+```{r sample size 1}
 
 
-x<- runSim(nSim=10000,  sample.size.perc=10/100)
-apply(x$estArray, 2, mean, na.rm=TRUE)
-quantile( x$estArray[,1] , prob=c(0.025, 0.5, 0.975))
-hist(x$estArray[,1], breaks=100)
+  x<- runSim(nSim=10000,  sample.size.perc=2/100) # run simulation
+  apply(x$estArray, 2, mean, na.rm=TRUE)[1]       # mean % error
+  quantile( x$estArray[,1] , prob=c(0.025, 0.5, 0.975))  # median and 95% confidence intervals for % error
+  hist(x$estArray[,1], breaks=100, main="Histogram of % error" , xlab="Percent error", ylab="No of simulations")     
+  
+```
 
-x<- runSim(nSim=10000,  sample.size.perc=2/100)
-apply(x$estArray, 2, mean, na.rm=TRUE)
-quantile( x$estArray[,1] , prob=c(0.025, 0.5, 0.975))
-hist(x$estArray[,1], breaks=100)
+## Sample size 5% of population
+
+```{r sample size 2}
+
+  x<- runSim(nSim=10000,  sample.size.perc=5/100) # run simulation
+  apply(x$estArray, 2, mean, na.rm=TRUE)[1]       # mean % error
+  quantile( x$estArray[,1] , prob=c(0.025, 0.5, 0.975))  # median and 95% confidence intervals for % error
+  hist(x$estArray[,1], breaks=100, main="Histogram of % error" , xlab="Percent error", ylab="No of simulations")               
+
+```
+
+## Sample size 10% of population
+
+```{r sample size 3}
+
+  x<- runSim(nSim=10000,  sample.size.perc=10/100) # run simulation
+  apply(x$estArray, 2, mean, na.rm=TRUE)[1]       # mean % error
+  quantile( x$estArray[,1] , prob=c(0.025, 0.5, 0.975))  # median and 95% confidence intervals for % error
+    hist(x$estArray[,1], breaks=100, main="Histogram of % error" , xlab="Percent error", ylab="No of simulations")     
+    
+```
+
+## Sample size 20% of population
+
+```{r sample size 4}
+
+  x<- runSim(nSim=10000,  sample.size.perc=20/100) # run simulation
+  apply(x$estArray, 2, mean, na.rm=TRUE)[1]       # mean % error
+  quantile( x$estArray[,1] , prob=c(0.025, 0.5, 0.975))  # median and 95% confidence intervals for % error
+  hist(x$estArray[,1], breaks=100, main="Histogram of % error" , xlab="Percent error", ylab="No of simulations")              
 
 
 ```
+
+## Computing Environment
+
+```{r}
+
+sessionInfo()
+
+```
+
+```{r echo=FALSE}
+
+stopTime<-proc.time()
+
+```
+
+This took `r (stopTime-startTime)[1][[1]]` seconds to execute.
 
  
