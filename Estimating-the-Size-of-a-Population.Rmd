@@ -14,7 +14,7 @@ header-includes:
 - \usepackage{fancyhdr}
 - \pagestyle{fancy}
 - \setlength\headheight{22pt}
-- \fancyfoot[RO]{xxxxxxxxxxxxx}
+- \fancyfoot[RO]{Estimating Population Size}
 - \usepackage{lastpage}
 - \cfoot{Page \thepage\ of \pageref{LastPage}}
 ---
@@ -33,13 +33,15 @@ header-includes:
         startTime<-proc.time()
         library(knitr)
          options(width=60)
-         
+
          opts_chunk$set(comment = "", warning = FALSE, message = FALSE,
-                       echo = TRUE, tidy = FALSE, size="tiny",  cache=FALSE,
+                       echo = TRUE, tidy = TRUE, size="tiny",  cache=FALSE,
                        progress=TRUE, tidy.opts=list(width.cutoff=60),
                          fig.width=7, fig.height=3.5,
                        cache.path = 'program_Cache/',
                        fig.path='figure/')
+         
+        # opts_chunk$set(tidy.opts=list(width.cutoff=80),tidy=TRUE) 
          
         knitr::knit_hooks$set(inline = function(x) {
           knitr:::format_sci(x, 'md')
@@ -49,6 +51,9 @@ header-includes:
         options(scipen=999)  # remove scientific notation
         
 
+        
+        
+ 
 ```
 
 ```{r ,echo=FALSE}
@@ -98,6 +103,8 @@ runSim <- function(nSim=1000,  sample.size.perc=10/100 ) {
 
 ```
 
+\newpage  
+
 ## Sample size 2% of population
 
 ```{r sample size 1}
@@ -105,21 +112,27 @@ runSim <- function(nSim=1000,  sample.size.perc=10/100 ) {
 
   x<- runSim(nSim=10000,  sample.size.perc=2/100) # run simulation
   apply(x$estArray, 2, mean, na.rm=TRUE)[1]       # mean % error
-  quantile( x$estArray[,1] , prob=c(0.025, 0.5, 0.975))  # median and 95% confidence intervals for % error
+  # median and 95% confidence intervals for % error
+  quantile( x$estArray[,1] , prob=c(0.025, 0.5, 0.975))   
   hist(x$estArray[,1], breaks=100, main="Histogram of % error" , xlab="Percent error", ylab="No of simulations")     
   
 ```
 
+\newpage  
+
 ## Sample size 5% of population
 
-```{r sample size 2}
+```{r sample size 2 }
 
   x<- runSim(nSim=10000,  sample.size.perc=5/100) # run simulation
   apply(x$estArray, 2, mean, na.rm=TRUE)[1]       # mean % error
-  quantile( x$estArray[,1] , prob=c(0.025, 0.5, 0.975))  # median and 95% confidence intervals for % error
+  # median and 95% confidence intervals for % error
+  quantile( x$estArray[,1] , prob=c(0.025, 0.5, 0.975))   
   hist(x$estArray[,1], breaks=100, main="Histogram of % error" , xlab="Percent error", ylab="No of simulations")               
 
 ```
+
+\newpage  
 
 ## Sample size 10% of population
 
@@ -127,10 +140,13 @@ runSim <- function(nSim=1000,  sample.size.perc=10/100 ) {
 
   x<- runSim(nSim=10000,  sample.size.perc=10/100) # run simulation
   apply(x$estArray, 2, mean, na.rm=TRUE)[1]       # mean % error
-  quantile( x$estArray[,1] , prob=c(0.025, 0.5, 0.975))  # median and 95% confidence intervals for % error
+  # median and 95% confidence intervals for % error
+  quantile( x$estArray[,1] , prob=c(0.025, 0.5, 0.975))   
     hist(x$estArray[,1], breaks=100, main="Histogram of % error" , xlab="Percent error", ylab="No of simulations")     
     
 ```
+
+\newpage  
 
 ## Sample size 20% of population
 
@@ -138,11 +154,13 @@ runSim <- function(nSim=1000,  sample.size.perc=10/100 ) {
 
   x<- runSim(nSim=10000,  sample.size.perc=20/100) # run simulation
   apply(x$estArray, 2, mean, na.rm=TRUE)[1]       # mean % error
-  quantile( x$estArray[,1] , prob=c(0.025, 0.5, 0.975))  # median and 95% confidence intervals for % error
+  # median and 95% confidence intervals for % error
+  quantile( x$estArray[,1] , prob=c(0.025, 0.5, 0.975))  
   hist(x$estArray[,1], breaks=100, main="Histogram of % error" , xlab="Percent error", ylab="No of simulations")              
 
 
 ```
+\newpage  
 
 ## Computing Environment
 
