@@ -1,0 +1,69 @@
+---
+title: "Estimating Population Size"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+first draft
+
+```{r cars}
+
+
+runSim <- function(nSim=1000,  sample.size.perc=10/100 ) {
+  
+  #set up an array to store parameter estimates
+  estArray <- array(0, dim=c(nSim,3))
+  
+  for (i in 1:nSim) {
+    
+    N <- sample(100:1000,1)  #pop
+    
+    n <- round(sample.size.perc*N,0) # the sample size
+    
+    sample2 <- sample(N, n) 
+    
+    est <- (n+1)/n*max(sample2) - 1 # apply formula
+    
+    est <-  round(est ,0) # estimate of pop size
+    
+    estArray[i,1] <- (est - N)/ N *100
+    estArray[i,2] <- N
+    estArray[i,3] <- sample.size.perc
+    
+  }
+  
+  list(estArray=estArray )
+  
+}
+
+
+x<- runSim(nSim=10000,  sample.size.perc=2/100)
+apply(x$estArray, 2, mean, na.rm=TRUE)
+quantile( x$estArray[,1] , prob=c(0.025, 0.5, 0.975))
+hist(x$estArray[,1], breaks=100)
+
+x<- runSim(nSim=10000,  sample.size.perc=5/100)
+apply(x$estArray, 2, mean, na.rm=TRUE)
+quantile( x$estArray[,1] , prob=c(0.025, 0.5, 0.975))
+hist(x$estArray[,1], breaks=100)
+
+
+x<- runSim(nSim=10000,  sample.size.perc=10/100)
+apply(x$estArray, 2, mean, na.rm=TRUE)
+quantile( x$estArray[,1] , prob=c(0.025, 0.5, 0.975))
+hist(x$estArray[,1], breaks=100)
+
+x<- runSim(nSim=10000,  sample.size.perc=2/100)
+apply(x$estArray, 2, mean, na.rm=TRUE)
+quantile( x$estArray[,1] , prob=c(0.025, 0.5, 0.975))
+hist(x$estArray[,1], breaks=100)
+
+
+```
+
+ 
