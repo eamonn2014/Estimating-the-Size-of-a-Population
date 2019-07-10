@@ -1,26 +1,59 @@
 ---
 title: "Estimating Population Size"
-output:
-  pdf_document: default
-  html_document: default
+author: "Eamonn O'Brien"
+date: '`r format(Sys.time(), "%d %B, %Y")`'
+output pdf_document :
+    toc: true
+    toc_depth: 2
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+    theme: united
+    highlight: tango
+    fig_caption: yes
+    fig_height: 6
+    fig_width: 8
+    number_sections: no
+header-includes:
+- \usepackage{eso-pic,graphicx,transparent}
+- \usepackage{graphicx}
+- \usepackage{fancyhdr}
+- \pagestyle{fancy}
+- \setlength\headheight{22pt}
+- \fancyfoot[RO]{xxxxxxxxxxxxx}
+- \usepackage{lastpage}
+- \cfoot{Page \thepage\ of \pageref{LastPage}}
 ---
 
+\newpage # adds new page after title
+\tableofcontents # adds table of contents
+\listoffigures
+\listoftables
+\newpage
 
 ```{r set-options, echo=FALSE, cache=FALSE, warning = FALSE}
 
-rm(list=ls())
-startTime<-proc.time()
-library(knitr)
-options(width=120)
-opts_chunk$set(comment = "", warning = FALSE, message = FALSE,
-               echo = TRUE, tidy = FALSE, size="tiny",  cache=FALSE,
-               progress=TRUE,
-               cache.path = 'program_Cache/',
-               fig.path='figure/')
+ 
 
-knitr::knit_hooks$set(inline = function(x) {
-  knitr:::format_sci(x, 'md')
-})
+         set.seed(123)
+        startTime<-proc.time()
+        library(knitr)
+         options(width=60)
+         
+         opts_chunk$set(comment = "", warning = FALSE, message = FALSE,
+                       echo = TRUE, tidy = FALSE, size="tiny",  cache=FALSE,
+                       progress=TRUE, tidy.opts=list(width.cutoff=60),
+                         fig.width=7, fig.height=3.5,
+                       cache.path = 'program_Cache/',
+                       fig.path='figure/')
+         
+        knitr::knit_hooks$set(inline = function(x) {
+          knitr:::format_sci(x, 'md')
+        })
+         
+        
+        options(scipen=999)  # remove scientific notation
+        
 
 ```
 
