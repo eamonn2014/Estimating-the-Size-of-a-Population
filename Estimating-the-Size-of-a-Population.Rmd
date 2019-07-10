@@ -2,18 +2,12 @@
 title: "Estimating Population Size"
 author: "Eamonn O'Brien"
 date: '`r format(Sys.time(), "%d %B, %Y")`'
-output pdf_document :
+output:
+  pdf_document:
     toc: true
     toc_depth: 2
-    toc_float:
-      collapsed: false
-      smooth_scroll: false
-    theme: united
-    highlight: tango
-    fig_caption: yes
-    fig_height: 6
-    fig_width: 8
-    number_sections: no
+  fig_height: 6
+  fig_width: 8
 header-includes:
 - \usepackage{eso-pic,graphicx,transparent}
 - \usepackage{graphicx}
@@ -25,8 +19,8 @@ header-includes:
 - \cfoot{Page \thepage\ of \pageref{LastPage}}
 ---
 
-\newpage # adds new page after title
-\tableofcontents # adds table of contents
+\newpage  
+\tableofcontents  
 \listoffigures
 \listoftables
 \newpage
