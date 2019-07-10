@@ -1,6 +1,8 @@
 ---
 title: "Estimating Population Size"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 ---
 
 
@@ -28,13 +30,16 @@ p2 <- function(x) {formatC(x, format="f", digits=4)}
 
 ```
 
-In any war, it is always of value to one side to have good intelligence on the weapons resources of the other side. During the Second World War, for example, Allied military planners eagerly searched for ways to accurately estimate the Axis production of tanks, aircraft, and numerous other weapons platforms. In the speciﬁc case of German tanks, a very clever way to do that was based on using either the stamped serial numbers or the gearbox markings on captured Mark I or Mark V tanks, respectively. This type of problem has far wider applications than simply counting tanks.
+In any war, it is always of value to one side to have good intelligence on the weapons resources of the other side. During the Second World War, for example, Allied military planners eagerly searched fro ways to accurately estimate the Axis production of tanks, aircrafts and numerous other weapons platforms. In the specific case of German tanks, a very clever way todo that was based on using either the stamped serial numbers or gearbox markings on captured Mark I and MArk V tanks, respectively. This type of problem has far wider applications.
 
-We can experimentally see how well the formula works in practice with a Monte Carlo simulation. That is, the program ﬁrst randomly picks the value of N (any integer from 100 to 1,000), and then asks for the value of the sample size n as a percentage of N. 
+We can experimentally see how well the formula that was used works in practice with a Monte Carlo Simulation. That is, the program first randomly picks a value for N (integer between 100 and 1000) with a value for the the sample size as a percentage of N.
 
-The program then generates, randomly, n different integers in the interval 1 to N (the program does know N, of course!) determines the maximum of those integers, and then uses our estimation formula to arrive at an estimated value for N. This estimate can then be compared with the actual value of N to determine how well our estimation formula has performed. We investigate samples that are 2%, 5%, 10% and 20% of the population.
+The program then generates, randomly, n different integers in the interval 1 to N, the maximum of those integers is then used in the estimation formula to estimate a value for N. This estimate can be compared to the actual value of N to determine how weel the formual has performed. We investigate samples that are 2%, 5%, 10% and 20% of the population.
 
-```{r pop function}
+
+## Function to implement Monte Carlo simulation using formula
+
+```{r function}
 
 
 runSim <- function(nSim=1000,  sample.size.perc=10/100 ) {
@@ -44,17 +49,17 @@ runSim <- function(nSim=1000,  sample.size.perc=10/100 ) {
   
   for (i in 1:nSim) {
     
-    N <- sample(100:1000,1)  #pop
+    N <- sample(100:1000,1)  # select a population size
     
     n <- round(sample.size.perc*N,0) # the sample size
     
-    sample2 <- sample(N, n) 
+    sample2 <- sample(N, n) # select a sample from the population
     
     est <- (n+1)/n*max(sample2) - 1 # apply formula
     
     est <-  round(est ,0) # estimate of pop size
     
-    estArray[i,1] <- (est - N)/ N *100
+    estArray[i,1] <- (est - N)/ N *100  # percentage error is captured
     estArray[i,2] <- N
     estArray[i,3] <- sample.size.perc
     
